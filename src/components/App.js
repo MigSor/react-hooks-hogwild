@@ -46,6 +46,12 @@ function App() {
       setHideHogClick([...hideHogClick, hiddenHog.name]);
    }
 
+   function showHog(e, hiddenHog) {
+      e.stopPropagation();
+      setHideHogClick(hideHogClick.filter((hog) => hog.name === hiddenHog.name));
+      console.log("I want to be shown", hiddenHog);
+   }
+
    return (
       <div className="App">
          <Nav />
@@ -82,7 +88,10 @@ function App() {
                            {showHogDetails && hog.name === chosenHog && <HogDetails hog={hog} />}
                         </div>
                      ) : (
-                        <h3>The hog is hidden...</h3>
+                        <div className="show-hidden">
+                           <h3>The Hog is hidden...</h3>
+                           <button onClick={(e) => showHog(e, hog)}>Show hidden Hog</button>
+                        </div>
                      )}
                   </div>
                );
