@@ -11,6 +11,7 @@ function App() {
    const [chosenHog, setChosenHog] = useState("");
    const [filteredHogs, setFilteredHogs] = useState(hogs);
    const [inputValue, setInputValue] = useState("");
+   const [hideHogClick, setHideHogClick] = useState([]);
 
    function showDetails(hog) {
       console.log(hog);
@@ -40,6 +41,11 @@ function App() {
       setFilteredHogs(searchedHog);
    }
 
+   function toggleTile(e, hiddenHog) {
+      e.stopPropagation();
+      setHideHogClick([...hideHogClick, hiddenHog.name]);
+   }
+
    return (
       <div className="App">
          <Nav />
@@ -66,11 +72,18 @@ function App() {
                         showDetails(hog);
                      }}
                   >
-                     <div className="pigTile">
-                        <img src={hog.image} alt="" style={{ width: "100%" }} />
-                        <h2>{hog.name}</h2>
-                        {showHogDetails && hog.name === chosenHog && <HogDetails hog={hog} />}
-                     </div>
+                     {!hideHogClick.includes(hog.name) ? (
+                        <div className="pigTile">
+                           <button className="hide" onClick={(e) => toggleTile(e, hog)}>
+                              Hide Hog
+                           </button>
+                           <img src={hog.image} alt="" style={{ width: "100%" }} />
+                           <h2>{hog.name}</h2>
+                           {showHogDetails && hog.name === chosenHog && <HogDetails hog={hog} />}
+                        </div>
+                     ) : (
+                        <h3>The hog is hidden...</h3>
+                     )}
                   </div>
                );
             })}
